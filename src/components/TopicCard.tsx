@@ -13,11 +13,12 @@ interface TopicCardProps {
   question: string;
   options: Option[];
   totalVotes: number;
+  votedOption: Option | null;
 }
 
-export default function TopicCard({ id, question, options, totalVotes }: TopicCardProps) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [hasVoted, setHasVoted] = useState(false);
+export default function TopicCard({ id, question, options, totalVotes, votedOption }: TopicCardProps) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(votedOption?.id || null);
+  const [hasVoted, setHasVoted] = useState(!!votedOption);
 
   const handleVote = async (id: string, optionId: string) => {
     if (!hasVoted) {
