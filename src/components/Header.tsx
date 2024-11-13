@@ -14,24 +14,26 @@ export default async function Header() {
           <div className="flex items-center space-x-4">
             <span className="text-lg font-semibold text-white">Your Voice Matters</span>
             {user ? (
-                <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4">
                 {user.image && (
                   <img
-                  src={user.image}
-                  alt="User Avatar"
-                  className="w-10 h-10 rounded-full"
+                    src={user.image}
+                    alt="User Avatar"
+                    className="w-10 h-10 rounded-full"
                   />
                 )}
                 <span className="text-lg font-semibold text-white">{user.email}</span>
-                <form action={async () => {
-                  'use server'
-                  await signOut();
-                }}>
-                  <button type="submit" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                  Sign Out
-                  </button>
-                </form>
+                <div className="flex flex-col items-center space-y-2">
+                  <form action={async () => {
+                    'use server'
+                    await signOut();
+                  }}>
+                    <button type="submit" className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm">
+                      Sign Out
+                    </button>
+                  </form>
                 </div>
+              </div>
             ) : (
               <form
                 action={async () => {

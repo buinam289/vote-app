@@ -12,6 +12,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Topic {
+  id       String      @id @default(cuid())
+  question String
+  options  Option[]
+  tags     TopicTag[]
+  totalVotes Int
+  votes      Vote[]
+}
+
+model Option {
+  id      String @id @default(cuid())
+  text    String
+  totalVotes   Int
+  topicId String
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  votes   Vote[]
+}
+
+model Tag {
+  id     String      @id @default(cuid())
+  name   String      @unique
+  topics TopicTag[]
+}
+
+model TopicTag {
+  id      String @id @default(cuid())
+  topicId String
+  tagId   String
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  tag     Tag    @relation(fields: [tagId], references: [id])
+
+  @@unique([topicId, tagId])
+}
+
+model Vote {
+  id      String @id @default(cuid())
+  topicId String
+  userId  String
+  optionId String
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  option  Option @relation(fields: [optionId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([topicId, userId])
+}
+
 model User {
   id            String     @id @default(cuid())
   name          String?
@@ -20,6 +67,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Vote Vote[]
 }
 
 model Account {
