@@ -1,4 +1,4 @@
-"use client";
+"use client"; // todo: make this server component
 
 import { useState } from 'react';
 

@@ -16,7 +16,11 @@ export async function GET(): Promise<Response> {
         },
     });
 
-    const votes = await prisma.vote.findMany();
+    const votes = await prisma.vote.findMany({
+        where: {
+            userId: session.user.id,
+        },
+    });
 
     const topicsWithVotedOption = topics.map(topic => {
         const votedOption = topic.options.find(option => 
