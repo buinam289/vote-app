@@ -80,7 +80,7 @@ async function main() {
   console.log('Seeding finished.');
 }
 
-main()
+export default main()
   .catch(e => {
     console.error(e);
     process.exit(1);

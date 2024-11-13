@@ -2,6 +2,7 @@ import TopicsFeed from '@/components/TopicsFeed';
 import Header from '@/components/Header';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+// import "@/data/mock-data";
 
 export default async function Home() {
   const session = await auth();
