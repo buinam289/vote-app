@@ -1,7 +1,7 @@
 import TopicCard from './TopicCard';
-import { MOCK_TOPICS } from '@/app/data/mock-data';
+import { MOCK_TOPICS } from '@/data/mock-data';
 
-export default function TopicFeed() {
+export default function TopicsFeed() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="space-y-6">

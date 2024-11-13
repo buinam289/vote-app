@@ -10,5 +10,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     providers: [
         GitHub,
     ],
-    basePath: "/auth"
+    basePath: "/auth",
 })
