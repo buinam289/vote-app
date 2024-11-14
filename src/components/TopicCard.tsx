@@ -2,23 +2,23 @@
 
 import { useState } from 'react';
 
-interface Option {
+export interface Option {
   id: string;
   text: string;
   totalVotes: number;
 }
 
-interface TopicCardProps {
+export interface TopicCardProps {
   id: string;
   question: string;
   options: Option[];
   totalVotes: number;
-  votedOption: Option | null;
+  votedOptionId: string | null;
 }
 
-export default function TopicCard({ id, question, options, totalVotes, votedOption }: TopicCardProps) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(votedOption?.id || null);
-  const [hasVoted, setHasVoted] = useState(!!votedOption);
+export default function TopicCard({ id, question, options, totalVotes, votedOptionId }: TopicCardProps) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(votedOptionId || null);
+  const [hasVoted, setHasVoted] = useState(!!votedOptionId);
 
   const handleVote = async (id: string, optionId: string) => {
     if (!hasVoted) {
