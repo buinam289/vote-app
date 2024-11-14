@@ -1,4 +1,5 @@
 import { auth, signIn, signOut } from "@/lib/auth";
+import Image from 'next/image';
 
 export default async function Header() {
   const session = await auth();
@@ -15,13 +16,13 @@ export default async function Header() {
             <span className="text-lg font-semibold text-white">Your Voice Matters</span>
             {user ? (
               <div className="flex items-center space-x-4">
-                {user.image && (
-                  <img
-                    src={user.image}
+                  <Image
+                    src={user.image || '/default-avatar.png'}
                     alt="User Avatar"
-                    className="w-10 h-10 rounded-full"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
                   />
-                )}
                 <span className="text-lg font-semibold text-white">{user.email}</span>
                 <div className="flex flex-col items-center space-y-2">
                   <form action={async () => {
@@ -34,16 +35,7 @@ export default async function Header() {
                   </form>
                 </div>
               </div>
-            ) : (
-              <form
-                action={async () => {
-                  "use server"
-                  await signIn("github", { redirectTo: "/" })
-                }}
-              >
-                <button type="submit">Sign In</button>
-              </form>
-            )}
+            ) : (<div></div>)}
           </div>
         </div>
       </div>
