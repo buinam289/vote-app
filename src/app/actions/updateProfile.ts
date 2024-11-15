@@ -1,3 +1,5 @@
+"use server";
+
 import { getSessionUserId } from "@/lib/auth";
 import formDataToObject from "@/lib/utils";
 import { PrismaClient } from "@prisma/client";
@@ -10,24 +12,6 @@ const profileSchema = z.object({
     gender: z.string().min(1, "Gender is required"),
     city: z.string().min(1, "City is required"),
 });
-
-export async function getProfile() {
-    const userId = await getSessionUserId();
-    if (!userId) {
-        return undefined;
-    }
-
-    return await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-            id: true,
-            name: true,
-            gender: true,
-            image: true,
-            city: true,
-        },
-    });
-}
 
 export async function updateProfile(formData: FormData) {
     const userId = await getSessionUserId();
