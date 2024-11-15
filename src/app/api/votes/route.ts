@@ -2,7 +2,7 @@
 import { auth } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 export async function POST(request: Request): Promise<Response> {
     const session = await auth();

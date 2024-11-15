@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@/lib/auth";
+import { auth, signOut } from "@/lib/auth";
 import Image from 'next/image';
 
 export default async function Header() {
