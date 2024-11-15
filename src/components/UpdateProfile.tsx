@@ -57,7 +57,7 @@ export default function UpdateProfile() {
                         <label htmlFor="image" className="block text-sm font-medium text-gray-700">
                             Profile Image:
                         </label>
-                        <input type="file" id="image" name="image" accept="image/*" className="mt-1 block w-full" />
+                        <input type="file" id="image" name="image" accept="image/*" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         {profile.image && <img src={profile.image} alt="Profile" width="100" className="mt-2" />}
                     </div>
                     <div className="mb-6">
@@ -69,14 +69,14 @@ export default function UpdateProfile() {
                             id="name"
                             name="name"
                             defaultValue={profile.name}
-                            className="mt-1 block w-full"
+                            className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
                     </div>
                     <div className="mb-6">
                         <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
                             Gender:
                         </label>
-                        <select id="gender" name="gender" defaultValue={profile.gender} className="mt-1 block w-full">
+                        <select id="gender" name="gender" defaultValue={profile.gender} className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>
@@ -86,7 +86,7 @@ export default function UpdateProfile() {
                         <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                             City:
                         </label>
-                        <select id="city" name="city" defaultValue={profile.city} className="mt-1 block w-full">
+                        <select id="city" name="city" defaultValue={profile.city} className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             <option value="Ho Chi Minh">Ho Chi Minh</option>
                             <option value="Ha Noi">Ha Noi</option>
                             {/* Add other cities */}
