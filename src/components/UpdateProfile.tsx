@@ -9,6 +9,7 @@ export default function UpdateProfile() {
     const [loading, setLoading] = useState(true);
     const [formLoading, setFormLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showCheckmark, setShowCheckmark] = useState(false);
 
     useEffect(() => {
         async function fetchProfile() {
@@ -33,11 +34,12 @@ export default function UpdateProfile() {
     async function handleUpdateProfile(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
-
         try {
             setFormLoading(true);
             await updateProfile(formData);
             setFormLoading(false);
+            setShowCheckmark(true);
+            setTimeout(() => setShowCheckmark(false), 1000);
         } catch (err) {
             console.error(err);
         }
@@ -93,9 +95,13 @@ export default function UpdateProfile() {
                     <button
                         type="submit"
                         className={`w-full py-2 px-4 font-bold rounded-lg transition duration-300 ${formLoading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
-                        disabled={formLoading}
                     >
-                        {formLoading ? 'Saving...' : 'Save'}
+                        {formLoading ? 'Saving...' :
+                            showCheckmark ? (
+                                <div>Saved <span className="text-green-500 ml-2">
+                                    &#10003;
+                                </span></div>
+                            ) : 'Save'}
                     </button>
                 </form>
             </div>
