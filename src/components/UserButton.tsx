@@ -15,7 +15,7 @@ export default function UserButton({ user }: { user: User | undefined }) {
     <>
       {user ? (
         <div className="relative flex items-center space-x-2">
-          <div className="relative mb-2">
+          <div className="relative">
             <button className="relative flex items-center space-x-2 text-lg font-semibold text-white focus:outline-none" onClick={() => setDropdownOpen(!dropdownOpen)}>
               <Image
                 src={user.image || '/default-avatar.png'}
