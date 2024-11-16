@@ -1,5 +1,5 @@
-import { auth, signOut } from "@/lib/auth";
-import Image from 'next/image';
+import { auth } from "@/lib/auth";
+import UserButton from "./UserButton";
 
 export default async function Header() {
   const session = await auth();
@@ -14,28 +14,7 @@ export default async function Header() {
           </h1>
           <div className="flex items-center space-x-4">
             <span className="text-lg font-semibold text-white">Your Voice Matters</span>
-            {user ? (
-              <div className="flex items-center space-x-4">
-                  <Image
-                    src={user.image || '/default-avatar.png'}
-                    alt="User Avatar"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                <span className="text-lg font-semibold text-white">{user.email}</span>
-                <div className="flex flex-col items-center space-y-2">
-                  <form action={async () => {
-                    'use server'
-                    await signOut();
-                  }}>
-                    <button type="submit" className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm">
-                      Sign Out
-                    </button>
-                  </form>
-                </div>
-              </div>
-            ) : (<div></div>)}
+            <UserButton user={user} />
           </div>
         </div>
       </div>
