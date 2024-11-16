@@ -24,6 +24,13 @@ export async function getTopics(): Promise<TopicCardProjection[]> {
         include: {
             options: true,
         },
+        orderBy: {
+            id: 'asc'
+        }
+    });
+
+    topics.map(topic => {
+        topic.options = topic.options.sort((a, b) => a.id.localeCompare(b.id));
     });
 
     const votes = userId ? await prisma.vote.findMany({
