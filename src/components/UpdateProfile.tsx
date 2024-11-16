@@ -53,7 +53,7 @@ export default function UpdateProfile() {
     if (error || !profile) return <div>{error || "Unauthorized"}</div>;
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center" style={{minHeight: "90vh"}}>
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
                 <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
                 <UploadImage title="Upload your profile image" filePath={profileImagePath} uploadImage={uploadProfileImage} />
