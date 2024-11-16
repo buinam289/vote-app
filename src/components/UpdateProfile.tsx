@@ -9,14 +9,10 @@ import Image from "next/image";
 export default function UpdateProfile() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
-    const [formLoading, setFormLoading] = useState(false);
+    const [formSaving, setFormLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showCheckmark, setShowCheckmark] = useState(false);
 
-    // async function handleUpload(formData: IncomingMessage) {
-    //     const result = await uploadProfileImage(formData);
-    //     console.log("Uploaded:", result);
-    // }
 
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
@@ -109,7 +105,7 @@ export default function UpdateProfile() {
                             accept="image/*"
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
-                        {filePath && <img src={filePath} alt="Profile" width={100} height={100} className="mt-2" />}
+                        {filePath && <Image src={filePath} alt="Profile" width={100} height={100} className="mt-2" />}
                     </div>
 
                     <button
@@ -156,9 +152,9 @@ export default function UpdateProfile() {
                     </div>
                     <button
                         type="submit"
-                        className={`w-full py-2 px-4 font-bold rounded-lg transition duration-300 ${formLoading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+                        className={`w-full py-2 px-4 font-bold rounded-lg transition duration-300 ${formSaving ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
                     >
-                        {formLoading ? 'Saving...' :
+                        {formSaving ? 'Saving...' :
                             showCheckmark ? (
                                 <div>Saved <span className="text-green-500 ml-2">
                                     &#10003;

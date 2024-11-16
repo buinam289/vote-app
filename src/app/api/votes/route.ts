@@ -1,8 +1,6 @@
 
 import { auth } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/utils";
 
 export async function POST(request: Request): Promise<Response> {
     const session = await auth();
@@ -19,5 +17,5 @@ export async function POST(request: Request): Promise<Response> {
         },
     });
 
-    return new Response(JSON.stringify(vote), { status: 201 });
+    return new Response(JSON.stringify(vote.id), { status: 201 });
 }

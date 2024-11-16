@@ -1,6 +1,9 @@
 import { z } from "zod";
+import { PrismaClient } from "@prisma/client";
 
-export default function formDataToObject<T>(formData: FormData, schema: z.ZodSchema<T>): T | undefined {
+export const prisma = new PrismaClient();
+
+export function formDataToObject<T>(formData: FormData, schema: z.ZodSchema<T>): T | undefined {
     // Convert FormData to plain object
     const obj = Object.fromEntries(formData.entries()) as Record<string, string>;
 

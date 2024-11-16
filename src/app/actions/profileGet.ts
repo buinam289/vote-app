@@ -1,9 +1,7 @@
 "use server";
 
 import { getSessionUserId } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/utils";
 
 export type Profile = {
     id: string;
@@ -14,7 +12,6 @@ export type Profile = {
 };
 
 export async function getProfile() : Promise<Profile | null> {
-    "use server";
     const userId = await getSessionUserId();
     if (!userId) {
         return null;

@@ -1,11 +1,9 @@
 import TopicCard from './TopicCard';
-import { TopicCardProps } from './TopicCard';
+import { getTopics } from '@/app/actions/topicsGet';
 
-type TopicsFeedProps = {
-  topics: Array<TopicCardProps>;
-};
+export default async function TopicsFeed() {
 
-export default function TopicsFeed({ topics }: TopicsFeedProps) {
+  const topics = await getTopics();
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">

@@ -1,11 +1,8 @@
 "use server";
 
 import { getSessionUserId } from "@/lib/auth";
-import formDataToObject from "@/lib/utils";
-import { PrismaClient } from "@prisma/client";
+import {prisma, formDataToObject} from "@/lib/utils";
 import { z } from "zod";
-
-const prisma = new PrismaClient();
 
 const profileSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -13,12 +10,19 @@ const profileSchema = z.object({
     city: z.string().min(1, "City is required"),
 });
 
-export async function updateProfile(formData: FormData) {
+type UpdateProfileProjection = {
+    id: string;
+    name: string | null;
+    gender: string | null;
+    city: string | null;
+};
+
+export async function updateProfile(formData: FormData): Promise<UpdateProfileProjection | null> {
     const userId = await getSessionUserId();
 
     const profile = formDataToObject(formData, profileSchema);
     if (!userId || !profile) {
-        return undefined;
+        return null;
     }
 
     const updatedUser =  await prisma.user.update({

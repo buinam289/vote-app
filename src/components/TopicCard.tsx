@@ -1,22 +1,9 @@
-"use client"; // todo: make this server component
+"use client";
 
+import { TopicCardProjection } from '@/app/actions/topicsGet';
 import { useState } from 'react';
 
-interface Option {
-  id: string;
-  text: string;
-  totalVotes: number;
-}
-
-export interface TopicCardProps {
-  id: string;
-  question: string;
-  options: Option[];
-  totalVotes: number;
-  votedOptionId: string | null;
-}
-
-export default function TopicCard({ id, question, options, totalVotes, votedOptionId }: TopicCardProps) {
+export default function TopicCard({ id, question, options, totalVotes, votedOptionId }: TopicCardProjection) {
   const [selectedOption, setSelectedOption] = useState<string | null>(votedOptionId || null);
   const [hasVoted, setHasVoted] = useState(!!votedOptionId);
 

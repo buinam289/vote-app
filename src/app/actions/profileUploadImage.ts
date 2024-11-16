@@ -3,10 +3,8 @@
 import { revalidatePath } from "next/cache";
 import fs from "fs/promises";
 import path from "path";
-import { PrismaClient } from "@prisma/client";
 import { getSessionUserId } from "@/lib/auth";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/utils";
 
 // Define the Server Action function to upload the file
 export async function uploadProfileImage(formData: FormData) {
