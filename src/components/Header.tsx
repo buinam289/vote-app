@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import UserButton from "./UserButton";
+import Link from "next/link";
 
 export default async function Header() {
   const session = await auth();
@@ -10,7 +11,7 @@ export default async function Header() {
       <div className="max-w-2xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
-            VoteHub
+            <Link href="/">VoteHub</Link>
           </h1>
           <div className="flex items-center space-x-4">
             <span className="text-lg font-semibold text-white">Your Voice Matters</span>
