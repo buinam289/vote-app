@@ -6,9 +6,10 @@ import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const session = await auth();
-  if (!session) {
+  if (!session || !session?.user?.id) {
     redirect("auth/signin");
   }
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
       <Header />
