@@ -7,6 +7,7 @@ export type Profile = {
     id: string;
     name: string | null;
     gender: string | null;
+    yearOfBirth: number | null;
     image: string | null;
     city: string | null;
 };
@@ -23,6 +24,7 @@ export async function getProfile() : Promise<Profile | null> {
             id: true,
             name: true,
             gender: true,
+            yearOfBirth: true,
             image: true,
             city: true,
         },

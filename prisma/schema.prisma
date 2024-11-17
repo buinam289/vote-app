@@ -66,6 +66,7 @@ model User {
   emailVerified DateTime?
   image         String?
   gender        String?
+  yearOfBirth   Int?
   city          String?
   accounts      Account[]
   sessions      Session[]

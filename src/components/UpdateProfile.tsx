@@ -83,6 +83,17 @@ export default function UpdateProfile() {
                     </div>
                     <div className="mb-6">
                         <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                            Year Of Birth:
+                        </label>
+                        <select id="yearOfBirth" name="yearOfBirth" defaultValue={profile.yearOfBirth} className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select year</option>
+                            {Array.from({ length: 51 }, (_, i) => 2020 - i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-6">
+                        <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                             City:
                         </label>
                         <select id="city" name="city" defaultValue={profile.city} className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
