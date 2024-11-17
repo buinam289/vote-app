@@ -14,6 +14,7 @@ export async function POST(request: Request): Promise<Response> {
             topicId,
             optionId,
             userId: session.user.id,
+            createdBy: session.user.name ?? session.user.id,
         },
     });
 
