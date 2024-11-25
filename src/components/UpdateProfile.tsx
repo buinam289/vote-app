@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { updateProfile } from "@/app/actions/profileUpdate";
+import updateProfile from "@/app/actions/profileUpdate";
 import { getProfile, Profile } from "@/app/actions/profileGet";
 import { uploadProfileImage } from "@/app/actions/profileUploadImage";
 import UploadImage from "./UploadImage";
@@ -13,6 +13,7 @@ export default function UpdateProfile() {
     const [formSaving, setFormLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showCheckmark, setShowCheckmark] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
         async function fetchProfile() {
@@ -38,9 +39,16 @@ export default function UpdateProfile() {
     async function handleUpdateProfile(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
+
         try {
             setFormLoading(true);
-            await updateProfile(formData);
+            const result = await updateProfile(formData);
+            if (!result?.success && typeof result?.data === 'object') { 
+                //setValidationErrors(Object.fromEntries(Object.entries(result?.data).map(([key, value]) => [key, String(value)])));
+                setValidationErrors(result.data);
+            } else {
+                setValidationErrors({});
+            }
             setFormLoading(false);
             setShowCheckmark(true);
             setTimeout(() => setShowCheckmark(false), 1000);
@@ -53,7 +61,7 @@ export default function UpdateProfile() {
     if (error || !profile) return <div>{error || "Unauthorized"}</div>;
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center" style={{minHeight: "90vh"}}>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center" style={{ minHeight: "90vh" }}>
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
                 <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
                 <UploadImage title="Upload your profile image" filePath={profileImagePath} uploadImage={uploadProfileImage} />
@@ -61,7 +69,7 @@ export default function UpdateProfile() {
                 <form onSubmit={handleUpdateProfile}>
                     <div className="mb-6">
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Name:
+                            Name (*):
                         </label>
                         <input
                             type="text"
@@ -70,6 +78,7 @@ export default function UpdateProfile() {
                             defaultValue={profile.name}
                             className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
+                        {validationErrors.name && <p className="text-red-500 text-sm">{validationErrors.name}</p>}
                     </div>
                     <div className="mb-6">
                         <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
@@ -80,9 +89,10 @@ export default function UpdateProfile() {
                             <option value="female">Female</option>
                             <option value="other">Other</option>
                         </select>
+                        {validationErrors.gender && <p className="text-red-500 text-sm">{validationErrors.gender}</p>}
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="yearOfBirth" className="block text-sm font-medium text-gray-700">
                             Year Of Birth:
                         </label>
                         <select id="yearOfBirth" name="yearOfBirth" defaultValue={profile.yearOfBirth} className="mt-1 px-2 py-2 block w-full border border-gray-300 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
@@ -91,6 +101,7 @@ export default function UpdateProfile() {
                                 <option key={year} value={year}>{year}</option>
                             ))}
                         </select>
+                        {validationErrors.yearOfBirth && <p className="text-red-500 text-sm">{validationErrors.yearOfBirth}</p>}
                     </div>
                     <div className="mb-6">
                         <label htmlFor="city" className="block text-sm font-medium text-gray-700">
@@ -101,6 +112,7 @@ export default function UpdateProfile() {
                             <option value="Ha Noi">Ha Noi</option>
                             {/* Add other cities */}
                         </select>
+                        {validationErrors.city && <p className="text-red-500 text-sm">{validationErrors.city}</p>}
                     </div>
                     <button
                         type="submit"

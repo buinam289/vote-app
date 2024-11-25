@@ -2,14 +2,13 @@
 
 import { getSessionUserId } from "@/lib/auth";
 import {prisma, formDataToObject} from "@/lib/utils";
-import { z } from "zod";
+import {profileSchema} from "./profileUpdate.validation";
+import { validate } from "@/lib/middlewares/validation";
 
-const profileSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    gender: z.string().min(1, "Gender is required"),
-    yearOfBirth: z.union([z.string(), z.number()]).transform((val) => typeof val === 'string' ? parseInt(val, 10) : val),
-    city: z.string().min(1, "City is required"),
-});
+type Response = {
+    success: boolean;
+    data: UpdateProfileProjection;
+}
 
 type UpdateProfileProjection = {
     id: string;
@@ -19,15 +18,15 @@ type UpdateProfileProjection = {
     city: string | null;
 };
 
-export async function updateProfile(formData: FormData): Promise<UpdateProfileProjection | null> {
+async function handler(formData: FormData): Promise<Response | undefined> {
     const userId = await getSessionUserId();
 
     const profile = formDataToObject(formData, profileSchema);
     if (!userId || !profile) {
-        return null;
+        return undefined;
     }
 
-    const updatedUser =  await prisma.user.update({
+    const updatedProfile = await prisma.user.update({
         where: { id: userId },
         data: { 
             name: profile.name,
@@ -37,5 +36,8 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfilePr
         },
     });
 
-    return updatedUser;
+    return {success: true, data: updatedProfile};
 }
+
+const updateProfile = validate(profileSchema, handler);
+export default updateProfile;
