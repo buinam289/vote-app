@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { ZodSchema, ZodError } from 'zod';
 
 export interface AppResponse<T> {
@@ -28,6 +29,19 @@ export function validate<T, R>(schema: ZodSchema, handler: (formObject: T) => Pr
 
         return await handler(obj);
     };
+}
+
+export function clientValidate(formData: FormData, schema: ZodSchema, setState: Dispatch<SetStateAction<Record<string, string>>>): boolean {
+    try {
+        const record = Object.fromEntries(formData.entries()) as Record<string, string>;
+        schema.parse(record);
+    } catch (err) {
+        if (err instanceof ZodError) {
+            setState(mapToRecordError(err));
+            return false;
+        }
+    }
+    return true;
 }
 
 function mapToRecordError(errors: ZodError) : Record<string, string> {

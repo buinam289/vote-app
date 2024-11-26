@@ -5,6 +5,8 @@ import updateProfile from "@/app/actions/profileUpdate";
 import { getProfile, Profile } from "@/app/actions/profileGet";
 import { uploadProfileImage } from "@/app/actions/profileUploadImage";
 import UploadImage from "./UploadImage";
+import { clientValidate } from "@/lib/middlewares/validation";
+import { profileSchema } from "@/app/actions/profileUpdate.validation";
 
 export default function UpdateProfile() {
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -39,6 +41,9 @@ export default function UpdateProfile() {
     async function handleUpdateProfile(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
+        if (!clientValidate(formData, profileSchema, setValidationErrors)) {
+            return;
+        }
 
         try {
             setFormLoading(true);
