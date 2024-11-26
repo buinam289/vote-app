@@ -1,29 +1,36 @@
 import { ZodSchema, ZodError } from 'zod';
 
-export function validate(schema: ZodSchema, handler: (formData: FormData) => Promise<object | undefined>) {
-    return async function (formData: FormData) {
+export interface AppResponse<T> {
+    success: boolean;
+    data: T;
+}
+
+export function validate<T, R>(schema: ZodSchema, handler: (formObject: T) => Promise<AppResponse<R>>) {
+    return async function (formData: FormData): Promise<AppResponse<R | Record<string, string>>> {
+        let obj: T;
+
         try {
-            const obj = Object.fromEntries(formData.entries()) as Record<string, string>;
-            schema.parse(obj);
+            const record = Object.fromEntries(formData.entries()) as Record<string, string>;
+            obj = schema.parse(record);
         } catch (err) {
             if (err instanceof ZodError) {
                 return {
                     success: false,
-                    data: mapToUIError(err)
+                    data: mapToRecordError(err)
                 };
             }
 
             return {
                 success: false,
-                data: 'Internal Server Error'
+                data: {'500': 'Internal Server Error'}
             };
         }
 
-        await handler(formData);
+        return await handler(obj);
     };
 }
 
-export function mapToUIError(errors: ZodError) : Record<string, string> {
+function mapToRecordError(errors: ZodError) : Record<string, string> {
     const errorMap: Record<string, string> = {};
     errors.errors.forEach((error) => {
         if (error.path.length > 0) {

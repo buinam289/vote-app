@@ -43,15 +43,14 @@ export default function UpdateProfile() {
         try {
             setFormLoading(true);
             const result = await updateProfile(formData);
-            if (!result?.success && typeof result?.data === 'object') { 
-                //setValidationErrors(Object.fromEntries(Object.entries(result?.data).map(([key, value]) => [key, String(value)])));
-                setValidationErrors(result.data);
+            if (!result.success) {
+                setValidationErrors(result.data as Record<string, string>);
             } else {
                 setValidationErrors({});
+                setShowCheckmark(true);
+                setTimeout(() => setShowCheckmark(false), 1000);
             }
             setFormLoading(false);
-            setShowCheckmark(true);
-            setTimeout(() => setShowCheckmark(false), 1000);
         } catch (err) {
             console.error(err);
         }

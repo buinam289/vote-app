@@ -1,16 +1,12 @@
 "use server";
 
 import { getSessionUserId } from "@/lib/auth";
-import {prisma, formDataToObject} from "@/lib/utils";
-import {profileSchema} from "./profileUpdate.validation";
-import { validate } from "@/lib/middlewares/validation";
+import { prisma } from "@/lib/utils";
+import { profileSchema } from "./profileUpdate.validation";
+import { AppResponse, validate } from "@/lib/middlewares/validation";
+import { User } from "@prisma/client";
 
-type Response = {
-    success: boolean;
-    data: UpdateProfileProjection;
-}
-
-type UpdateProfileProjection = {
+interface UpdateProfileProjection {
     id: string;
     name: string | null;
     gender: string | null;
@@ -18,26 +14,21 @@ type UpdateProfileProjection = {
     city: string | null;
 };
 
-async function handler(formData: FormData): Promise<Response | undefined> {
+async function handler(updateProfileDto: UpdateProfileProjection): Promise<AppResponse<User>> {
     const userId = await getSessionUserId();
-
-    const profile = formDataToObject(formData, profileSchema);
-    if (!userId || !profile) {
-        return undefined;
-    }
 
     const updatedProfile = await prisma.user.update({
         where: { id: userId },
-        data: { 
-            name: profile.name,
-            gender: profile.gender,
-            yearOfBirth: Number(profile.yearOfBirth),
-            city: profile.city 
+        data: {
+            name: updateProfileDto.name,
+            gender: updateProfileDto.gender,
+            yearOfBirth: Number(updateProfileDto.yearOfBirth),
+            city: updateProfileDto.city
         },
     });
 
-    return {success: true, data: updatedProfile};
+    return { success: true, data: updatedProfile };
 }
 
-const updateProfile = validate(profileSchema, handler);
+const updateProfile = validate<UpdateProfileProjection, User>(profileSchema, handler);
 export default updateProfile;
