@@ -48,13 +48,17 @@ model TopicTag {
 }
 
 model Vote {
-  id      String @id @default(cuid())
-  topicId String
-  userId  String
-  optionId String
-  topic   Topic  @relation(fields: [topicId], references: [id])
-  option  Option @relation(fields: [optionId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+  id          String   @id @default(cuid())
+  topicId     String
+  userId      String
+  optionId    String
+  createdDate DateTime @default(now())
+  modifiedDate DateTime @updatedAt
+  createdBy   String
+  modifiedBy  String?
+  topic       Topic    @relation(fields: [topicId], references: [id])
+  option      Option   @relation(fields: [optionId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 
   @@unique([topicId, userId])
 }
@@ -66,6 +70,7 @@ model User {
   emailVerified DateTime?
   image         String?
   gender        String?
+  yearOfBirth   Int?
   city          String?
   accounts      Account[]
   sessions      Session[]
@@ -85,6 +90,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
+  createdDate       DateTime @default(now())
+  modifiedDate      DateTime @updatedAt
+  createdBy         String @default("system")
+  modifiedBy        String?
   user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId]) // Composite unique constraint for NextAuth
