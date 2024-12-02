@@ -17,23 +17,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     basePath: "/auth",
 })
 
-export async function getSessionUserId(): Promise<string | undefined> {
+export async function getSessionUserId(): Promise<string | null> {
     const session = await auth();
 
     if (!session) {
         handleRedirection();
-        return undefined; // Ensures the function exits after redirection
+        return null
     }
 
-    return session.user?.id;
+    return session.user?.id ?? null;
 }
 
 function handleRedirection() {
     if (typeof window !== 'undefined') {
-        // Client-side redirection
         window.location.href = '/auth/signin';
-    } else {
-        // Server-side redirection
-        redirect('/auth/signin');
     }
 }

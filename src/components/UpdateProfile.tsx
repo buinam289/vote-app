@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import updateProfile from "@/app/actions/profileUpdate";
-import { getProfile, Profile } from "@/app/actions/profileGet";
+import { Profile } from "@/app/actions/profileGet";
 import { uploadProfileImage } from "@/app/actions/profileUploadImage";
 import UploadImage from "./UploadImage";
-import { clientValidate } from "@/lib/middlewares/validation";
-import { profileSchema } from "@/app/actions/profileUpdate.validation";
+import { clientValidate } from "@/lib/validation";
+import { profileSchema } from "@/app/api/profile/UpdateProfileDto";
 
 export default function UpdateProfile() {
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -20,7 +19,7 @@ export default function UpdateProfile() {
     useEffect(() => {
         async function fetchProfile() {
             try {
-                const data = await getProfile();
+                const data = await fetch('/api/profile').then(res => res.json());
                 if (!data) {
                     setError("Unauthorized");
                     return;
@@ -47,9 +46,15 @@ export default function UpdateProfile() {
 
         try {
             setFormLoading(true);
-            const result = await updateProfile(formData);
-            if (!result.success) {
-                setValidationErrors(result.data as Record<string, string>);
+            const res = await fetch('/api/profile', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+              });
+            if (!res.ok) {
+                //setValidationErrors(res.json());
             } else {
                 setValidationErrors({});
                 setShowCheckmark(true);

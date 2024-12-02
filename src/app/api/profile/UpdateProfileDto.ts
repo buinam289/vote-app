@@ -12,3 +12,11 @@ export const profileSchema = z.object({
     yearOfBirth: z.union([z.string(), z.number()]).transform((val) => typeof val === 'string' ? parseInt(val, 10) : val),
     city: z.string().min(1, "City is required"),
 });
+
+export interface UpdateProfileDto {
+    id: string;
+    name: string | null;
+    gender: string | null;
+    yearOfBirth: number | null;
+    city: string | null;
+};
