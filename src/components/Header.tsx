@@ -3,8 +3,7 @@ import UserButton from "./UserButton";
 import Link from "next/link";
 
 export default async function Header() {
-  const session = await auth();
-  const user = session?.user;
+  const user = (await auth())?.user;
 
   return (
     <header className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-purple-600 border-b border-gray-300 shadow-lg backdrop-blur-lg bg-opacity-90">

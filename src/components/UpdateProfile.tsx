@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Profile } from "@/app/actions/profileGet";
 import { uploadProfileImage } from "@/app/actions/profileUploadImage";
 import UploadImage from "./UploadImage";
 import { clientValidate } from "@/lib/validation";
 import { profileSchema } from "@/app/api/profile/UpdateProfileDto";
+import { User } from "@prisma/client";
 
 export default function UpdateProfile() {
-    const [profile, setProfile] = useState<Profile | null>(null);
+    const [profile, setProfile] = useState<User | null>(null);
     const [profileImagePath, setProfileImagePath] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [formSaving, setFormLoading] = useState(false);

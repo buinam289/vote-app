@@ -4,7 +4,7 @@ import { prisma } from "@/lib/utils";
 import { profileSchema, UpdateProfileDto } from "./UpdateProfileDto";
 import { modelBinding } from "@/lib/modelBinding";
 
-export async function GET(): Promise<Response> {
+export const GET = async (): Promise<Response> => {
     const userId = await getSessionUserId();
     if (!userId) {
         return new Response('Unauthorized', { status: 401 });

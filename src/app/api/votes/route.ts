@@ -1,8 +1,7 @@
-
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/utils";
 
-export async function POST(request: Request): Promise<Response> {
+export const POST = async (request: Request): Promise<Response> => {
     const session = await auth();
     if (!session || !session?.user?.id) {
         return new Response('Unauthorized', { status: 401 });

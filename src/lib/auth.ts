@@ -3,7 +3,6 @@ import Facebook from "next-auth/providers/facebook";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/utils";
 
 
@@ -32,4 +31,5 @@ function handleRedirection() {
     if (typeof window !== 'undefined') {
         window.location.href = '/auth/signin';
     }
+    // server redirection is handled by middleware.ts
 }
